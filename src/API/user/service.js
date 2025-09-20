@@ -31,3 +31,16 @@ export const userLoginService = async ({ email, password }) => {
 
     return { message: "Login successful", user: userAvailable };
 };
+
+export const userProfileService = async (userId) => {
+    try {
+        const profile = await userModel.findById(userId).select('-password');
+        if (!profile) {
+            throw new Error('User not found');
+        }
+        return { success: true, data: profile };
+    } catch (error) {
+        console.error('User Profile Error:', error);
+        throw new Error("Failed to fetch user profile: " + error.message);
+    }
+}

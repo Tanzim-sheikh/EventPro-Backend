@@ -4,7 +4,9 @@ import dotenv from 'dotenv'
 import connectDB from './src/helper/config/mongoDB.js'
 import mongoose from 'mongoose'
 import userRoutes from './src/API/user/index.js'
-// import authorRoutes from './src/API/author/index.js'
+import OrganizerRoutes from './src/API/Organizer/index.js'
+import adminRoutes from './src/API/admin/index.js'
+import eventRoutes from './src/API/Events/index.js'
 dotenv.config()
 
 const app = express()
@@ -24,9 +26,10 @@ connectDB()
 app.post("/", (req, res) => {
     res.send("Ki hall haii !!!")
 })
-app.use("/User",userRoutes)
-// app.use("/Author", authorRoutes)
-
+app.use("/User", userRoutes)
+app.use("/Organizer", OrganizerRoutes)
+app.use("/Admin", adminRoutes)
+app.use("/Event", eventRoutes)
 const PORT = process.env.PORT || 8000
 
 app.listen(PORT, () => {

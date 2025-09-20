@@ -11,9 +11,25 @@ export const protect = (req, res, next) => {
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.userId = decoded.id; // req me user id attach
+        req.user = {
+            id: decoded.id,
+            type: decoded.type // Add user type to the request object
+        };
         next();
-    } catch {
-        return res.status(401).json({ message: "Invalid token" });
+    } catch (error) {
+        console.error('JWT Error:', error.message);
+        return res.status(401).json({ message: "Invalid or expired token" });
     }
+};
+
+// Authorization middleware to check user type
+export const authorize = (...types) => {
+    return (req, res, next) => {
+        if (!types.includes(req.user?.type)) {
+            return res.status(403).json({ 
+                message: `User role ${req.user?.type} is not authorized to access this route` 
+            });
+        }
+        next();
+    };
 };
