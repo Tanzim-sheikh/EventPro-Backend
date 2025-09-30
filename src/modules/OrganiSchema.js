@@ -44,12 +44,32 @@ const Organizer = new Schema({
             message: 'Please select a valid gender'
         }
     },
+    profilePhoto: {
+        url: { type: String, default: null },
+        public_id: { type: String, default: null }
+    },
+    aadharDoc: {
+        url: { type: String, default: null },
+        public_id: { type: String, default: null }
+    },
+    panDoc: {
+        url: { type: String, default: null },
+        public_id: { type: String, default: null }
+    },
+    gstDoc: {
+        url: { type: String, default: null },
+        public_id: { type: String, default: null }
+    },
     type: { 
         type: String, 
         required: true, 
         enum: ['organizer'],
         default: 'organizer' 
-    }
+    },
+    otp: { type: String },
+    otpExpiry: { type: Date },
+    isVerified: { type: Boolean, default: false },
+    isVerifiedByAdmin: { type: Boolean, default: false },
 }, {
     timestamps: true
 });

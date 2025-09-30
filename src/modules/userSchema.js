@@ -7,12 +7,19 @@ const userSchema = new Schema({
     name:{type:String, required:true},
     email:{type:String, required:true, unique:true},
     password:{type:String, required:true},
+    profilePhoto: {
+      url: { type: String, default: null },
+      public_id: { type: String, default: null }
+    },
     type: { 
       type: String, 
       required: true, 
       enum: ['user', 'admin'], 
       default: 'user' 
   },
+  isVerified: { type: Boolean, default: false },   // OTP verify flag
+  otp: { type: String },                          // current OTP
+  otpExpiry: { type: Date } 
 })
 
 // password hash middleware

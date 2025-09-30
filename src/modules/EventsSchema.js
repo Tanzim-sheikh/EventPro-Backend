@@ -1,6 +1,5 @@
 
 import mongoose from "mongoose";
-
 const eventSchema = new mongoose.Schema(
   {
     eventName: {
@@ -34,7 +33,7 @@ const eventSchema = new mongoose.Schema(
     tickets: {
       type: Number,
       required: true,
-      min: 0, // tickets kabhi negative na ho
+      min: 0,
     },
     price: {
       type: Number,
@@ -48,7 +47,7 @@ const eventSchema = new mongoose.Schema(
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // Organizer ka reference (User schema se link)
+      ref: "Organizer", // Organizer model ka reference
       required: true,
     },
     status: {

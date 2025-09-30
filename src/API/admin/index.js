@@ -1,11 +1,14 @@
-import express from "express"
-import {protect} from '../../helper/common/authMiddleware.js';
-import { AllUsers, AllOrganizers } from './controller.js';
+import express from "express";
+import { protect, authorize } from '../../helper/common/authMiddleware.js';
+import { AllUsers, AllOrganizers, NotVerifiedOrganizers, VerifyOrganizer, RejectOrganizer } from './controller.js';
+
 const adminRoutes = express.Router();
 
-// adminRoutes.get("/AdminProfile", protect, adminProfile);
-
-adminRoutes.get("/AllUsers", protect, AllUsers);
-adminRoutes.get("/AllOrganizers", protect, AllOrganizers)
+// Only "admin" should access these routes
+adminRoutes.get("/AllUsers", protect, authorize("admin"), AllUsers);
+adminRoutes.get("/AllOrganizers", protect, authorize("admin"), AllOrganizers);
+adminRoutes.get("/NotVerifiedOrganizers", protect, authorize("admin"), NotVerifiedOrganizers);
+adminRoutes.put("/VerifyOrganizer/:id", protect, authorize("admin"), VerifyOrganizer);
+adminRoutes.delete("/RejectOrganizer/:id", protect, authorize("admin"), RejectOrganizer);
 
 export default adminRoutes;
