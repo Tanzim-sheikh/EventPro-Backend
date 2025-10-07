@@ -1,5 +1,4 @@
 import OrganizerSchema from "../../modules/OrganiSchema.js";
-import Event from "../../modules/EventsSchema.js";
 import generateOTP from "../../helper/common/generateOTP.js";
 import {sendOTP, ForgotPasswordOrganizerOTP} from "../../helper/config/mailer.js";
 
@@ -180,60 +179,5 @@ export const OrganizerForgotPasswordService = async (email) => {
     } catch (error) {
         console.error('Organizer Forgot Password Error:', error);
         throw new Error("Failed to send OTP (forgot password): " + (error?.message || error));
-    }
-};
-
-export const OrganizerCreateEventService = async (organizerId, payload) => {
-    try {
-        const organizer = await OrganizerSchema.findById(organizerId);
-        if (!organizer) {
-            throw new Error('Organizer not found');
-        }
-        // Map incoming payload to EventsSchema fields
-        const {
-            eventName,
-            date,
-            time,
-            city,
-            address,
-            organizerName, // optional; we'll prefer organizer.Name for integrity
-            tickets,
-            price,
-            description,
-            status,
-        } = payload || {};
-
-        // Basic validations for required fields per EventsSchema
-        const missing = [];
-        if (!eventName) missing.push('eventName');
-        if (!date) missing.push('date');
-        if (!time) missing.push('time');
-        if (!city) missing.push('city');
-        if (!address) missing.push('address');
-        if (tickets === undefined) missing.push('tickets');
-        if (price === undefined) missing.push('price');
-        if (!description) missing.push('description');
-        if (missing.length) {
-            throw new Error(`Missing required fields: ${missing.join(', ')}`);
-        }
-
-        const eventDoc = await Event.create({
-            eventName,
-            date: new Date(date),
-            time,
-            city,
-            address,
-            organizerName: organizerName || organizer.Name,
-            tickets,
-            price,
-            description,
-            createdBy: organizer._id,
-            ...(status ? { status } : {}),
-        });
-
-        return { success: true, message: 'Event created successfully', data: eventDoc };
-    } catch (error) {
-        console.error('Organizer Create Event Error:', error);
-        throw error;
     }
 };

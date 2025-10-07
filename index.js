@@ -7,14 +7,18 @@ import userRoutes from './src/API/user/index.js'
 import OrganizerRoutes from './src/API/Organizer/index.js'
 import adminRoutes from './src/API/admin/index.js'
 import eventRoutes from './src/API/Events/index.js'
+import bookingRoutes from './src/API/Bookings/index.js'
 dotenv.config()
 
 const app = express()
 
 // Middleware
 app.use(cors({
-    origin: "http://localhost:5173",
-    credentials: true
+    // origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    allowedHeaders: ["Content-Type", "Authorization"]
 }))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -24,12 +28,13 @@ connectDB()
 
 //Routes
 app.post("/", (req, res) => {
-    res.send("Ki hall haii !!!")
+    res.send("Ki Hall haii !!!")
 })
 app.use("/User", userRoutes)
 app.use("/Organizer", OrganizerRoutes)
 app.use("/Admin", adminRoutes)
 app.use("/Event", eventRoutes)
+app.use("/Booking", bookingRoutes)
 const PORT = process.env.PORT || 8000
 
 app.listen(PORT, () => {

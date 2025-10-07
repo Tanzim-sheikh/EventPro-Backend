@@ -1,7 +1,6 @@
 import { OrganizerSignupService, OrganizerLoginService,
      OrganizerProfileService, OrganizerEmailVerifyService,
-      OrganizerForgotPasswordService, OrganizerResetPasswordService,
-       OrganizerCreateEventService } from "./service.js";
+      OrganizerForgotPasswordService, OrganizerResetPasswordService } from "./service.js";
 import { generateToken } from "../../helper/common/jwtToken.js";
 import {sendOTP, WelcomOrganizerOTP} from "../../helper/config/mailer.js"
 import { uploadBufferToCloudinary } from '../../helper/config/cloudinaryUpload.js';
@@ -146,7 +145,6 @@ export const OrganizerForgotPassword = async (req, res) => {
         res.status(400).json({ message: error.message });
     }
 };
-
 export const OrganizerResetPassword = async (req, res) => {
     try {
         const { email, otp, newPassword } = req.body;
@@ -154,20 +152,6 @@ export const OrganizerResetPassword = async (req, res) => {
         res.status(200).json(result);
     } catch (error) {
         console.error('Organizer Reset Password Error:', error);
-        res.status(400).json({ message: error.message });
-    }
-};
-
-export const OrganizerCreateEvent = async (req, res) => {
-    try {
-        const organizerId = req.user?.id;
-        if (!organizerId) {
-            return res.status(401).json({ success: false, message: 'Organizer not authenticated' });
-        }
-        const result = await OrganizerCreateEventService(organizerId, req.body);
-        res.status(200).json(result);
-    } catch (error) {
-        console.error('Organizer Create Event Error:', error);
         res.status(400).json({ message: error.message });
     }
 };

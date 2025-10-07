@@ -32,18 +32,20 @@ const eventSchema = new mongoose.Schema(
     },
     tickets: {
       type: Number,
-      required: true,
-      min: 0,
     },
     price: {
       type: Number,
       required: true,
-      min: 0, // free event bhi ho sakta hai (0 Rs)
+      min: 0, // free event bhi ho sakta hai
     },
     description: {
       type: String,
       required: true,
       trim: true,
+    },
+    eventPhoto: {
+      url: { type: String, default: null },
+      public_id: { type: String, default: null }
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
@@ -56,7 +58,6 @@ const eventSchema = new mongoose.Schema(
       default: "upcoming",
     },
   },
-  { timestamps: true }
 );
 
 export default mongoose.model("Event", eventSchema);
